@@ -21,7 +21,7 @@ class CreateBillsTable extends Migration
             $table->integer('due_date');
             $table->integer('due_month')->default(0);
             $table->boolean('paid')->default(0);
-            $table->boolean('autopay');
+            $table->boolean('autopay')->default(0);
             $table->foreignId('account_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

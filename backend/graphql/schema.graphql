@@ -8,14 +8,28 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 scalar DateTimeTz @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTimeTz")
 
 type Query {
-    users: [User!]! @paginate(defaultCount: 10)
-    user(id: ID @eq): User @find
+    accounts: [Account!]! @all
+    account(id: ID @eq): Account @find
 }
 
-type User {
+type Account {
     id: ID!
     name: String!
-    email: String!
+    description: String
     created_at: DateTime!
     updated_at: DateTime!
+    bills: [Bill!]! @hasMany
+}
+
+type Bill {
+    id: ID!
+    name: String!
+    description: String
+    amount: Int!
+    due_date: Int!
+    due_month: Int
+    paid: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
+    account: Account! @belongsTo
 }
