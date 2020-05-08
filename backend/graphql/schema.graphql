@@ -21,6 +21,10 @@ type Account {
     bills: [Bill!]! @hasMany
 }
 
+type Mutation {
+    createAccount(name: String!, description: String): Account! @create
+}
+
 type Bill {
     id: ID!
     name: String!
