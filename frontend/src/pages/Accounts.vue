@@ -1,11 +1,15 @@
 <template>
     <div class="accounts-list">
-        <a :href="`/accounts/${account.id}/bills`" v-for="account in accounts" :key="account.id">
+        <router-link
+            :to="`/accounts/${account.id}/bills`"
+            v-for="account in accounts"
+            :key="account.id"
+        >
             <div class="account-card">
                 <h3>{{ account.name }}</h3>
                 <p>{{ account.description }}</p>
             </div>
-        </a>
+        </router-link>
     </div>
 </template>
 
