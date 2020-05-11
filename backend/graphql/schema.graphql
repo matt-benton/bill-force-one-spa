@@ -37,3 +37,14 @@ type Bill {
     updated_at: DateTime!
     account: Account! @belongsTo
 }
+
+type Mutation {
+    updateBill(
+        id: ID!
+        name: String
+        description: String
+        due_date: Int
+        due_month: Int
+        paid: Boolean
+    ): Bill! @update
+}

@@ -2,7 +2,13 @@
     <div>
         <h2>Account Dashboard</h2>
         <div v-if="$apollo.loading">Loading</div>
-        <bill-card v-for="bill in account.bills" :key="bill.id" :bill="bill" v-else></bill-card>
+        <bill-card
+            v-for="bill in account.bills"
+            :key="bill.id"
+            :bill="bill"
+            @paid-status-toggled="togglePaidStatus(bill)"
+            v-else
+        ></bill-card>
     </div>
 </template>
 
@@ -15,6 +21,24 @@ export default {
         return {
             accountId: this.$route.params.accountId,
         }
+    },
+    methods: {
+        togglePaidStatus(bill) {
+            this.$apollo.mutate({
+                mutation: gql`
+                    mutation($id: ID!, $paid: Boolean!) {
+                        updateBill(id: $id, paid: $paid) {
+                            id
+                            paid
+                        }
+                    }
+                `,
+                variables: {
+                    id: bill.id,
+                    paid: !bill.paid,
+                },
+            })
+        },
     },
     components: {
         'bill-card': BillCard,
@@ -32,6 +56,8 @@ export default {
                             description
                             due_month
                             due_date
+                            paid
+                            amount
                         }
                     }
                 }
