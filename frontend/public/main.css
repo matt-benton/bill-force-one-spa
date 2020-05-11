@@ -1,0 +1,76 @@
+@import 'variables.css';
+@import 'buttons.css';
+
+*,
+*:before,
+*:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background-color: var(--color-grey-light-1);
+    font-family: 'Work Sans', sans-serif;
+}
+
+.container {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 30rem 1fr;
+    grid-template-rows: auto auto 3fr;
+}
+
+.row {
+    margin: var(--spacing-medium) var(--spacing-large);
+}
+
+nav {
+    grid-row: span 3;
+    font-size: var(--font-small);
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+}
+
+@media (max-width: 1200px) {
+    html {
+        font-size: 58%;
+    }
+}
+
+@media (max-width: 992px) {
+    html {
+        font-size: 55%;
+    }
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 52%;
+    }
+
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+    }
+
+    nav {
+        grid-row: span 1;
+    }
+}
+
+@media (max-width: 576px) {
+    html {
+        font-size: 52%;
+    }
+}

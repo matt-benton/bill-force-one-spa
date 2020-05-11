@@ -96,4 +96,64 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.bills-card {
+    padding: var(--spacing-large);
+    background-color: var(--color-white);
+    color: var(--color-grey-dark-3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 40rem;
+    box-shadow: 0 8px 5px var(--color-grey-light-2);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: var(--font-small);
+}
+
+.card-header a {
+    color: var(--color-primary-dark-3);
+}
+
+.card-body {
+    flex: 2;
+    padding-top: var(--spacing-large);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: var(--font-smaller);
+}
+
+.due-text {
+    font-size: var(--font-medium);
+    padding-bottom: var(--spacing-medium);
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: var(--spacing-large);
+}
+
+.warning-icon {
+    width: var(--font-small);
+    height: var(--font-small);
+    fill: var(--color-red);
+}
+
+.paid-icon {
+    width: var(--font-large);
+    height: var(--font-large);
+    margin-left: var(--spacing-small);
+    fill: var(--color-white);
+}
+
+.autopay-text {
+    font-size: var(--font-smaller);
+}
+</style>

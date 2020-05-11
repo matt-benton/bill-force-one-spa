@@ -72,4 +72,26 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.bills-list-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-small);
+    font-size: var(--font-medium);
+}
+
+.bills-list-menu-right form {
+    margin-left: var(--spacing-small);
+}
+
+.bills-list-menu-right {
+    display: flex;
+}
+
+.bills-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: var(--spacing-large);
+}
+</style>
