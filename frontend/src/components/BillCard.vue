@@ -10,7 +10,7 @@
             <p class="due-text">
                 Due on {{ getMonthName(bill) }} the {{ formatDueDateWithSuffix(bill) }}
                 <svg
-                    v-if="bill.warning"
+                    v-if="getWarningStatus(bill)"
                     class="warning-icon"
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -90,6 +90,44 @@ export default {
         },
         togglePaidStatus() {
             this.$emit('paid-status-toggled')
+        },
+        getWarningStatus(bill) {
+            return this.isPastDue(bill)
+        },
+        isDue(bill) {
+            return !bill.paid
+        },
+        isPastDue(bill) {
+            if (this.isDue(bill)) {
+                const now = new Date(Date.now())
+
+                if (bill.due_month === 0) {
+                    // today's date is after the due date
+                    return now.getDay() + 1 > bill.due_date
+                } else {
+                    /**
+                     * This month is after the due month
+                     * or this month is the same as the due month and today's date is past the due date
+                     */
+                    return (
+                        now.getMonth() + 1 > bill.due_month ||
+                        (now.getMonth() + 1 && now.getDay() + 1 > bill.due_date)
+                    )
+                }
+            }
+        },
+        isDueToday(bill) {
+            if (this.isDue(bill)) {
+                const now = new Date(Date.now())
+
+                if (bill.due_month === 0) {
+                    return now.getDay() + 1 > bill.due_date
+                } else {
+                    return (
+                        now.getMonth() + 1 === bill.due_month && now.getDay() + 1 === bill.due_date
+                    )
+                }
+            }
         },
     },
     props: ['bill'],
