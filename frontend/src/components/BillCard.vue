@@ -4,7 +4,7 @@
             <a href="#">
                 <h3>{{ bill.name }}</h3>
             </a>
-            <span>{{ bill.amount }}</span>
+            <span>{{ getAmountFormatted(bill.amount) }}</span>
         </div>
         <div class="card-body">
             <p class="due-text">
@@ -84,6 +84,9 @@ export default {
                 case 12:
                     return 'December'
             }
+        },
+        getAmountFormatted(amount) {
+            return (amount / 100).toFixed(2)
         },
         togglePaidStatus() {
             this.$emit('paid-status-toggled')
