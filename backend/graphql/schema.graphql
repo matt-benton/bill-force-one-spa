@@ -10,6 +10,7 @@ scalar DateTimeTz @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Da
 type Query {
     accounts: [Account!]! @all
     account(id: ID @eq): Account @find
+    bill(id: ID @eq): Bill @find
 }
 
 type Account {
@@ -23,6 +24,16 @@ type Account {
 
 type Mutation {
     createAccount(name: String!, description: String): Account! @create
+    updateBill(
+        id: ID!
+        name: String
+        description: String
+        amount: Int
+        due_date: Int
+        due_month: Int
+        paid: Boolean
+        autopay: Boolean
+    ): Bill! @update
 }
 
 type Bill {
@@ -33,18 +44,9 @@ type Bill {
     due_date: Int!
     due_month: Int
     paid: Boolean!
+    autopay: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    account_id: Int
     account: Account! @belongsTo
-}
-
-type Mutation {
-    updateBill(
-        id: ID!
-        name: String
-        description: String
-        due_date: Int
-        due_month: Int
-        paid: Boolean
-    ): Bill! @update
 }

@@ -1,9 +1,9 @@
 <template>
     <div class="bills-card">
         <div class="card-header">
-            <a href="#">
+            <router-link :to="`/accounts/${bill.account_id}/bills/${bill.id}`">
                 <h3>{{ bill.name }}</h3>
-            </a>
+            </router-link>
             <span>{{ getAmountFormatted(bill.amount) }}</span>
         </div>
         <div class="card-body">

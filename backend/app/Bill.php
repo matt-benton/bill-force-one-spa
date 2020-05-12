@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
 {
-    protected $fillable = ['id', 'paid'];
+    protected $fillable = ['id', 'name', 'description', 'amount', 'due_date', 'due_month', 'autopay', 'paid'];
 
     public function account()
     {
