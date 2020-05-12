@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div class="row">
+            <main-info-panel :account="account"></main-info-panel>
+        </div>
         <h2>Account Dashboard</h2>
         <div v-if="$apollo.loading">Loading</div>
         <bill-card
@@ -15,6 +18,7 @@
 <script>
 import gql from 'graphql-tag'
 import BillCard from '../components/BillCard'
+import MainInfoPanel from '../components/MainInfoPanel'
 
 export default {
     data() {
@@ -42,6 +46,7 @@ export default {
     },
     components: {
         'bill-card': BillCard,
+        'main-info-panel': MainInfoPanel,
     },
     apollo: {
         account: {
