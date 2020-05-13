@@ -34,6 +34,7 @@ type Mutation {
         paid: Boolean
         autopay: Boolean
     ): Bill! @update
+    deleteBill(id: ID!): Bill @delete
 }
 
 type Bill {

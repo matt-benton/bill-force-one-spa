@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { ACCOUNT_QUERY } from '../constants/graphql'
+import { PAY_BILL_MUTATION } from '../constants/graphql'
 import BillCard from '../components/BillCard'
 import MainInfoPanel from '../components/MainInfoPanel'
 
@@ -29,14 +30,7 @@ export default {
     methods: {
         togglePaidStatus(bill) {
             this.$apollo.mutate({
-                mutation: gql`
-                    mutation($id: ID!, $paid: Boolean!) {
-                        updateBill(id: $id, paid: $paid) {
-                            id
-                            paid
-                        }
-                    }
-                `,
+                mutation: PAY_BILL_MUTATION,
                 variables: {
                     id: bill.id,
                     paid: !bill.paid,
@@ -50,23 +44,7 @@ export default {
     },
     apollo: {
         account: {
-            query: gql`
-                query($accountId: ID!) {
-                    account(id: $accountId) {
-                        id
-                        name
-                        bills {
-                            id
-                            name
-                            description
-                            due_month
-                            due_date
-                            paid
-                            amount
-                        }
-                    }
-                }
-            `,
+            query: ACCOUNT_QUERY,
             variables() {
                 return {
                     accountId: this.$route.params.accountId,

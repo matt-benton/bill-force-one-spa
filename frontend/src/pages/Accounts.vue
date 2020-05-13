@@ -14,19 +14,11 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { ALL_ACCOUNTS_QUERY } from '../constants/graphql'
 
 export default {
     apollo: {
-        accounts: gql`
-            query {
-                accounts {
-                    id
-                    name
-                    description
-                }
-            }
-        `,
+        accounts: ALL_ACCOUNTS_QUERY,
     },
 }
 </script>

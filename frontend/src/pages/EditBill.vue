@@ -3,12 +3,16 @@
         <div class="alert alert-primary">
             ALERT MESSAGE
         </div>
-        <div class="alert alert-danger" id="delete-bill-dialog">
+        <div class="alert alert-danger" v-show="deleteDialogVisible">
             <p>Are you sure you want to delete this bill?</p>
             <div class="alert-buttons">
                 <form>
-                    <button class="btn btn-danger" type="submit">Delete</button>
-                    <button class="btn btn-secondary" type="button" id="hide-delete-dialog-button">
+                    <button class="btn btn-danger" @click.prevent="deleteBill">Delete</button>
+                    <button
+                        class="btn btn-secondary"
+                        type="button"
+                        @click="deleteDialogVisible = false"
+                    >
                         Cancel
                     </button>
                 </form>
@@ -53,7 +57,11 @@
                 <label for="autopay">Autopay</label>
             </div>
             <button class="btn btn-primary" @click.prevent="updateBill">Save</button>
-            <button class="btn btn-secondary" type="button" id="show-delete-dialog-button">
+            <button
+                class="btn btn-secondary"
+                type="button"
+                @click.prevent="deleteDialogVisible = true"
+            >
                 Delete
             </button>
         </form>
@@ -61,41 +69,58 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import {
+    BILL_QUERY,
+    UPDATE_BILL_MUTATION,
+    DELETE_BILL_MUTATION,
+    ACCOUNT_QUERY,
+} from '../constants/graphql'
 
 export default {
+    data() {
+        return {
+            deleteDialogVisible: false,
+        }
+    },
     methods: {
+        deleteBill() {
+            this.$apollo
+                .mutate({
+                    mutation: DELETE_BILL_MUTATION,
+                    variables: {
+                        id: this.bill.id,
+                    },
+                    update: (store, payload) => {
+                        // Read the data from our cache for this query.
+                        const data = store.readQuery({
+                            query: ACCOUNT_QUERY,
+                            variables: {
+                                accountId: this.$route.params.accountId,
+                            },
+                        })
+
+                        // Remove the deleted item from the cache
+                        data.account.bills = data.account.bills.filter(
+                            (bill) => bill.id !== payload.data.deleteBill.id,
+                        )
+
+                        // Write our data back to the cache.
+                        store.writeQuery({
+                            query: ACCOUNT_QUERY,
+                            variables: {
+                                accountId: this.$route.params.accountId,
+                            },
+                            data,
+                        })
+                    },
+                })
+                .then(() => {
+                    this.$router.push(`/accounts/${this.$route.params.accountId}/bills`)
+                })
+        },
         updateBill() {
             this.$apollo.mutate({
-                mutation: gql`
-                    mutation(
-                        $id: ID!
-                        $name: String!
-                        $description: String
-                        $amount: Int!
-                        $dueDate: Int!
-                        $dueMonth: Int
-                        $autopay: Boolean
-                    ) {
-                        updateBill(
-                            id: $id
-                            name: $name
-                            description: $description
-                            amount: $amount
-                            due_date: $dueDate
-                            due_month: $dueMonth
-                            autopay: $autopay
-                        ) {
-                            id
-                            name
-                            description
-                            amount
-                            due_date
-                            due_month
-                            autopay
-                        }
-                    }
-                `,
+                mutation: UPDATE_BILL_MUTATION,
                 variables: {
                     id: this.bill.id,
                     name: this.bill.name,
@@ -110,22 +135,10 @@ export default {
     },
     apollo: {
         bill: {
-            query: gql`
-                query($billId: ID!) {
-                    bill(id: $billId) {
-                        id
-                        name
-                        description
-                        amount
-                        autopay
-                        due_date
-                        due_month
-                    }
-                }
-            `,
+            query: BILL_QUERY,
             variables() {
                 return {
-                    billId: 1,
+                    billId: this.$route.params.billId,
                 }
             },
         },
