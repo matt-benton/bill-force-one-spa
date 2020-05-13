@@ -3,15 +3,18 @@
         <div class="row">
             <main-info-panel :account="account"></main-info-panel>
         </div>
-        <h2>Account Dashboard</h2>
-        <div v-if="$apollo.loading">Loading</div>
-        <bill-card
-            v-for="bill in account.bills"
-            :key="bill.id"
-            :bill="bill"
-            @paid-status-toggled="togglePaidStatus(bill)"
-            v-else
-        ></bill-card>
+        <div class="row">
+            <div class="bills-list">
+                <div v-if="$apollo.loading">Loading</div>
+                <bill-card
+                    v-for="bill in account.bills"
+                    :key="bill.id"
+                    :bill="bill"
+                    @paid-status-toggled="togglePaidStatus(bill)"
+                    v-else
+                ></bill-card>
+            </div>
+        </div>
     </div>
 </template>
 
