@@ -120,13 +120,15 @@ export default {
         },
         resetPaidBills(bills) {
             bills.forEach(bill => {
-                this.$apollo.mutate({
-                    mutation: PAY_BILL_MUTATION,
-                    variables: {
-                        id: bill.id,
-                        paid: false,
-                    },
-                })
+                if (bill.paid) {
+                    this.$apollo.mutate({
+                        mutation: PAY_BILL_MUTATION,
+                        variables: {
+                            id: bill.id,
+                            paid: false,
+                        },
+                    })
+                }
             })
         },
     },
