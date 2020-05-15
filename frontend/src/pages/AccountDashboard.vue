@@ -34,7 +34,13 @@
                     <router-link :to="`/accounts/${accountId}/bills/create`">
                         <button class="btn btn-secondary">New Bill</button>
                     </router-link>
-                    <button class="btn btn-secondary" type="submit">Reset Monthly Bills</button>
+                    <button
+                        class="btn btn-secondary"
+                        type="submit"
+                        @click="resetPaidBills(displayedBills)"
+                    >
+                        Reset Paid Bills
+                    </button>
                 </div>
             </div>
             <div class="bills-list">
@@ -52,8 +58,7 @@
 </template>
 
 <script>
-import { ACCOUNT_QUERY } from '../constants/graphql'
-import { PAY_BILL_MUTATION } from '../constants/graphql'
+import { ACCOUNT_QUERY, PAY_BILL_MUTATION } from '../constants/graphql'
 import BillCard from '../components/BillCard'
 import MainInfoPanel from '../components/MainInfoPanel'
 
@@ -112,6 +117,17 @@ export default {
                         return bill.due_month !== 0
                     })
             }
+        },
+        resetPaidBills(bills) {
+            bills.forEach(bill => {
+                this.$apollo.mutate({
+                    mutation: PAY_BILL_MUTATION,
+                    variables: {
+                        id: bill.id,
+                        paid: false,
+                    },
+                })
+            })
         },
     },
     components: {
