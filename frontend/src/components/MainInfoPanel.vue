@@ -32,29 +32,25 @@ export default {
         sumOfAllBills: function() {
             let total = 0
 
-            if (this.account) {
-                this.account.bills.forEach((bill) => {
-                    total += bill.amount
-                })
-            }
+            this.displayedBills.forEach(bill => {
+                total += bill.amount
+            })
 
             return (total / 100).toFixed(2)
         },
         sumOfUnpaidBills: function() {
             let total = 0
 
-            if (this.account) {
-                this.account.bills.forEach((bill) => {
-                    if (!bill.paid) {
-                        total += bill.amount
-                    }
-                })
-            }
+            this.displayedBills.forEach(bill => {
+                if (!bill.paid) {
+                    total += bill.amount
+                }
+            })
 
             return (total / 100).toFixed(2)
         },
     },
-    props: ['account'],
+    props: ['account', 'displayedBills'],
 }
 </script>
 

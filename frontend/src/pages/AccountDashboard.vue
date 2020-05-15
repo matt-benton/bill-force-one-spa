@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <!-- ! FIXME: The values inside this component are based on ALL bills, not displayed bills -->
-            <main-info-panel :account="account"></main-info-panel>
+            <main-info-panel :account="account" :displayedBills="displayedBills"></main-info-panel>
         </div>
         <div class="row">
             <div class="bills-list-menu">
@@ -67,7 +67,11 @@ export default {
     },
     computed: {
         displayedBills() {
-            return this.sortBills(this.filterBills(this.account.bills))
+            if (this.account) {
+                return this.sortBills(this.filterBills(this.account.bills))
+            }
+
+            return []
         },
     },
     methods: {
@@ -101,7 +105,7 @@ export default {
                     return bills
                 case 'dueThisMonth':
                     return bills.filter(bill => {
-                        return bill.due_month === now.getMonth() + 1
+                        return bill.due_month === 0 || bill.due_month === now.getMonth() + 1
                     })
                 case 'dueYearly':
                     return bills.filter(bill => {
