@@ -1,15 +1,21 @@
 <template>
     <div>
         <div class="row">
+            <!-- ! FIXME: The values inside this component are based on ALL bills, not displayed bills -->
             <main-info-panel :account="account"></main-info-panel>
         </div>
         <div class="row">
             <div class="bills-list-menu">
                 <form class="bills-order-form">
-                    <select class="bills-filter-select" id="bills-filter-select" name="filter">
-                        <option value="month">Due This Month</option>
+                    <select
+                        class="bills-filter-select"
+                        id="bills-filter-select"
+                        name="filter"
+                        v-model="filterBy"
+                    >
+                        <option value="dueThisMonth">Due This Month</option>
                         <option value="all">All Bills</option>
-                        <option value="yearly">All Yearly Bills</option>
+                        <option value="dueYearly">All Yearly Bills</option>
                     </select>
                     <label for="bills-order-select">Order By</label>
                     <select
@@ -34,7 +40,7 @@
             <div class="bills-list">
                 <div v-if="$apollo.loading">Loading</div>
                 <bill-card
-                    v-for="bill in sortedBills"
+                    v-for="bill in displayedBills"
                     :key="bill.id"
                     :bill="bill"
                     @paid-status-toggled="togglePaidStatus(bill)"
@@ -55,23 +61,13 @@ export default {
     data() {
         return {
             accountId: this.$route.params.accountId,
-            sortBy: 'name',
+            sortBy: 'due_date',
+            filterBy: 'dueThisMonth',
         }
     },
     computed: {
-        sortedBills: function() {
-            const bills = this.account.bills
-
-            return bills.sort((a, b) => {
-                switch (typeof a[this.sortBy]) {
-                    case 'string':
-                        return a[this.sortBy].localeCompare(b[this.sortBy])
-                    case 'number':
-                        return a[this.sortBy] - b[this.sortBy]
-                    case 'boolean':
-                        return b[this.sortBy] - a[this.sortBy]
-                }
-            })
+        displayedBills() {
+            return this.sortBills(this.filterBills(this.account.bills))
         },
     },
     methods: {
@@ -83,6 +79,35 @@ export default {
                     paid: !bill.paid,
                 },
             })
+        },
+        sortBills(bills) {
+            // ! FIXME: Bills are sorted by due date only so they are not in monthly order
+            return bills.sort((a, b) => {
+                switch (typeof a[this.sortBy]) {
+                    case 'string':
+                        return a[this.sortBy].localeCompare(b[this.sortBy])
+                    case 'number':
+                        return a[this.sortBy] - b[this.sortBy]
+                    case 'boolean':
+                        return b[this.sortBy] - a[this.sortBy]
+                }
+            })
+        },
+        filterBills(bills) {
+            const now = new Date(Date.now())
+
+            switch (this.filterBy) {
+                case 'all':
+                    return bills
+                case 'dueThisMonth':
+                    return bills.filter(bill => {
+                        return bill.due_month === now.getMonth() + 1
+                    })
+                case 'dueYearly':
+                    return bills.filter(bill => {
+                        return bill.due_month !== 0
+                    })
+            }
         },
     },
     components: {
