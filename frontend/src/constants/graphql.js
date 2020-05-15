@@ -6,16 +6,6 @@ export const ALL_ACCOUNTS_QUERY = gql`
             id
             name
             description
-            bills {
-                id
-                name
-                description
-                due_month
-                due_date
-                paid
-                amount
-                account_id
-            }
         }
     }
 `
@@ -34,6 +24,7 @@ export const ACCOUNT_QUERY = gql`
                 paid
                 amount
                 account_id
+                autopay
             }
         }
     }
