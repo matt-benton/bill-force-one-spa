@@ -101,7 +101,7 @@ export default {
 
                         // Remove the deleted item from the cache
                         data.account.bills = data.account.bills.filter(
-                            (bill) => bill.id !== payload.data.deleteBill.id,
+                            bill => bill.id !== payload.data.deleteBill.id,
                         )
 
                         // Write our data back to the cache.

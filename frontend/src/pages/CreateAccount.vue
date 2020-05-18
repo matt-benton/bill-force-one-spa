@@ -42,7 +42,7 @@ export default {
                         description: this.description,
                     },
                 })
-                .then((response) => {
+                .then(response => {
                     this.$router.push(`/accounts/${response.data.createAccount.id}/bills`)
                 })
         },

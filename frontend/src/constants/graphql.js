@@ -53,6 +53,38 @@ export const BILL_QUERY = gql`
     }
 `
 
+export const CREATE_BILL_MUTATION = gql`
+    mutation CREATE_BILL_MUTATION(
+        $name: String!
+        $description: String
+        $amount: Int!
+        $due_date: Int!
+        $due_month: Int
+        $autopay: Boolean
+        $account_id: Int!
+    ) {
+        createBill(
+            name: $name
+            description: $description
+            amount: $amount
+            due_date: $due_date
+            due_month: $due_month
+            autopay: $autopay
+            account_id: $account_id
+        ) {
+            id
+            name
+            description
+            due_month
+            due_date
+            paid
+            amount
+            account_id
+            autopay
+        }
+    }
+`
+
 export const UPDATE_BILL_MUTATION = gql`
     mutation UPDATE_BILL_MUTATION(
         $id: ID!

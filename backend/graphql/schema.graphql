@@ -24,6 +24,15 @@ type Account {
 
 type Mutation {
     createAccount(name: String!, description: String): Account! @create
+    createBill(
+        name: String!
+        description: String
+        amount: Int!
+        due_date: Int!
+        due_month: Int
+        autopay: Boolean
+        account_id: Int!
+    ): Bill! @create
     updateBill(
         id: ID!
         name: String

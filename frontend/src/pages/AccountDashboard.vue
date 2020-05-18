@@ -1,7 +1,6 @@
 <template>
     <div>
         <div class="row">
-            <!-- ! FIXME: The values inside this component are based on ALL bills, not displayed bills -->
             <main-info-panel :account="account" :displayedBills="displayedBills"></main-info-panel>
         </div>
         <div class="row">

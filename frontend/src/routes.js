@@ -4,6 +4,7 @@ import CreateAccount from './pages/CreateAccount'
 import AccountDashboard from './pages/AccountDashboard'
 import EditBill from './pages/EditBill'
 import NavAndContent from './layouts/NavAndContent'
+import CreateBill from './pages/CreateBill'
 
 export const routes = [
     { path: '', component: Welcome },
@@ -14,6 +15,7 @@ export const routes = [
             { path: '/accounts', component: Accounts },
             { path: '/accounts/create', component: CreateAccount },
             { path: '/accounts/:accountId/bills', component: AccountDashboard },
+            { path: '/accounts/:accountId/bills/create', component: CreateBill },
             { path: '/accounts/:accountId/bills/:billId', component: EditBill },
         ],
     },
