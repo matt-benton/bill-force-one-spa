@@ -142,6 +142,14 @@ export default {
                 }
             },
         },
+        account: {
+            query: ACCOUNT_QUERY,
+            variables() {
+                return {
+                    accountId: this.$route.params.accountId,
+                }
+            },
+        },
     },
 }
 </script>
